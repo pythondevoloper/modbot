@@ -72,16 +72,17 @@ def inline_handler(update, context):
                         buttons.append(row)
                         row = []
 
-                    # Mana shu yerda xato bor edi, to'g'rilandi:
-                    clicked_btn = db.get_category_parent(current_id)
-                    if clicked_btn and clicked_btn['parent_id']:
-                        buttons.append([InlineKeyboardButton(
-                            text="⬅️ Orqaga / Назад", callback_data=f"category_back_{clicked_btn['parent_id']}"
-                        )])
-                    else:
-                        buttons.append([InlineKeyboardButton(
-                            text="⬅️ Orqaga / Назад", callback_data="category_back"
-                        )])
+                # TUGATILDI: "Orqaga" tugmasi 'for' siklidan TASHQARIGA olindi.
+                # Endi u har bir versiya uchun takrorlanmaydi, faqat eng oxirida 1 marta qo'shiladi.
+                clicked_btn = db.get_category_parent(current_id)
+                if clicked_btn and clicked_btn['parent_id']:
+                    buttons.append([InlineKeyboardButton(
+                        text="⬅️ Orqaga / Назад", callback_data=f"category_back_{clicked_btn['parent_id']}"
+                    )])
+                else:
+                    buttons.append([InlineKeyboardButton(
+                        text="⬅️ Orqaga / Назад", callback_data="category_back"
+                    )])
 
                 query.message.edit_text(
                     text=globals.TEXT_CHOOSE_CATEGORY[lang_id],
@@ -107,7 +108,7 @@ def inline_handler(update, context):
                         parse_mode="Markdown"
                     )
                 else:
-                    # Agar fayl hali yuklanmagan bo'lsa
+                    # Agar  fayl hali yuklanmagan bo'lsa
                     download_url = f"https://t.me/rexcraft_mod_fayllari/{current_id}"
                     mod_buttons = [
                         [InlineKeyboardButton(text="📥 Havola orqali yuklash", url=download_url)],
